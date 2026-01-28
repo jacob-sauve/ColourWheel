@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+"""
+Module to play sounds when the touch sensor is pressed.
+This file must be run on the robot.
+"""
+ 
+from utils import sound
+from utils.brick import TouchSensor, wait_ready_sensors
+
+SOUND = sound.Sound(duration=0.3, pitch="A4", volume=60)
+TOUCH_SENSOR = TouchSensor(1)
+
+wait_ready_sensors() # Note: Touch sensors actually have no initialization time
+
+
+def play_sound():
+    "Play a single note."
+    SOUND.play()
+    SOUND.wait_done()
+
+
+def play_sound_on_button_press(testing_speaker=False):
+    "In an infinite loop, play a single note when the touch sensor is pressed."
+    n_clicks = 0
+    message_printed = False
+    try:
+        while True:
+            touch_sensor_pressed = TOUCH_SENSOR.is_pressed()
+            if touch_sensor_pressed:
+                if not message_printed: 
+                    message_printed = True
+                    n_clicks += 1
+                    print(f"Pressed x{n_clicks}")
+                if testing_speaker:
+                    play_sound()
+            else:
+                message_printed = False
+    except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
+        exit()
+
+
+if __name__=='__main__':
+    play_sound()
+
+    while True:
+        # TODO Implement this function
+        choice = input("Choose test sound or test reliability (s/r): ").strip().lower()[0] 
+        if (choice == "s"):
+            print("Testing sound") 
+            play_sound_on_button_press(testing_speaker=True)
+        elif (choice == "r"):
+            print("Testing reliability") 
+            play_sound_on_button_press(testing_speaker=False)
+        else:
+            print("Invalid input. Please input s or r") 
