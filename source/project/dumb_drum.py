@@ -27,7 +27,7 @@ motor.set_limits(power=50, dps=90)
 # Will rotate 180 degrees backwards from current position.
 # Does not care about the absolute position.
 while not STOP.is_pressed():
-    motor.set_position_relative(motor.get_position()-180)
+    motor.set_position_relative(motor.get_position()-10)
     time.sleep(2)
 print("Stopped")
 
