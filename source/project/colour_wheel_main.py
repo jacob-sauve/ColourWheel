@@ -2,7 +2,7 @@
 
 """
 Colour Wheel software implementation
-v0.1
+v0.2
 """
 
 # import modules
@@ -11,13 +11,14 @@ from utils import sound
 from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
 
 # constants
-VERSION = 0.1
+VERSION = 0.2
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
     # connect TouchSensor to port 1 and ColorSensor to port 2
 TOUCH_SENSOR = TouchSensor(1)
 COLOR_SENSOR = EV3ColorSensor(2)
+EMERGENCY_STOP = TouchSensor(3)
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 
 # wait for EV3ColorSensor to initialise (TouchSensor has no init time)
@@ -35,16 +36,20 @@ def main_loop(debugging=False):
         played = False # flag to only play audio once per click
         output_file = open(COLOR_SENSOR_DATA_FILE, "w")
         output_file.write("color_data\tnote\n")
-        while True:
+        while not EMERGENCY_STOP.is_pressed():
             is_pressed = TOUCH_SENSOR.is_pressed()
             color_data = COLOR_SENSOR.get_rgb()
             if is_pressed:
                 if not played:
                     # only register click if not already done for this
                     # button-press
-                    print("touch sensor pressed")
+                    if debugging:
+                        # additional print debugging if in debug mode
+                        print("touch sensor pressed")
+                        print(f"{color_data=}")
                     if None not in color_data:
                         note = classify(color_data)
+                        print(f"playing note {note}")
                         play_sound(note)
                         output_file.write(f"{color_data}\t{note}\n")
                     played = True
@@ -52,6 +57,7 @@ def main_loop(debugging=False):
                 # reset flag
                 played = False
             sleep(0.1)
+        raise Exception("EMERGENCY STOP ACTIVATED")
     except Exception as e:
         # print error message for debugging
         if debugging:
