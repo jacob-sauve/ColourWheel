@@ -15,10 +15,10 @@ VERSION = 0.5
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
-    # connect TouchSensor to port 1 and ColorSensor to port 2
+# connect TouchSensor to port 1, ColorSensor to port 2
 TOUCH_SENSOR = TouchSensor(1)
 COLOR_SENSOR = EV3ColorSensor(2)
-EMERGENCY_STOP = TouchSensor(3)
+EMERGENCY_STOP = TouchSensor(3) # emergency stop TouchSensor (port 3)
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 COLOURS = {"A4":440.0, "C4":261.63}
 
