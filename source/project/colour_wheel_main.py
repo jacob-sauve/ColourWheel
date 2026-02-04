@@ -2,54 +2,71 @@
 
 """
 Colour Wheel software implementation
-v0.0
+v0.1
 """
 
 # import modules
+from time import sleep
 from utils import sound
-from utils.brick import TouchSensor, wait_ready_sensors
-import colour_selection.py as c
+from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
 
 # constants
-VERSION = 0.0
+VERSION = 0.1
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
+    # connect TouchSensor to port 1 and ColorSensor to port 2
 TOUCH_SENSOR = TouchSensor(1)
+COLOR_SENSOR = EV3ColorSensor(2)
+COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 
-wait_ready_sensors() # Note: Touch sensors actually have no initialization time
-
-
-def play_sound(pitch, duration=DURATION, volume=VOLUME):
-    """Play a single note."""
-    new_sound = sound.Sound(duration=duration, pitch=pitch, volume=volume)
-    new_sound.play()
-    new_sound.wait_done()
+# wait for EV3ColorSensor to initialise (TouchSensor has no init time)
+wait_ready_sensors()
 
 
-def main_loop():
-    """In an infinite loop, play a single note when the touch sensor is pressed."""
-    sound_played = False # flag to register one click per press even if button held down
+def play_sound(pitch):
+    """Play a single note of pitch pitch"""
+    SOUND.pitch = pitch
+    SOUND.play()
+    SOUND.wait_done()
+
+def main_loop(debugging=False):
     try:
-        note = -1
+        played = False # flag to only play audio once per click
+        output_file = open(COLOR_SENSOR_DATA_FILE, "w")
+        output_file.write("color_data\tnote\n")
         while True:
-            touch_sensor_pressed = TOUCH_SENSOR.is_pressed()
-            new_note = c.note_select()
-            if touch_sensor_pressed:
-                if not sound_played or new_note != note: 
-                    sound_played = True
-                    note = new_note
-                    print(f"Playing {note}")
-                    play_sound(note)
+            is_pressed = TOUCH_SENSOR.is_pressed()
+            color_data = COLOR_SENSOR.get_rgb()
+            if is_pressed:
+                if not played:
+                    # only register click if not already done for this
+                    # button-press
+                    print("touch sensor pressed")
+                    if None not in color_data:
+                        note = classify(color_data)
+                        play_sound(note)
+                        output_file.write(f"{color_data}\t{note}\n")
+                    played = True
             else:
-                # reset flag on button release
-                message_printed = False
-    except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
+                # reset flag
+                played = False
+            sleep(0.1)
+    except Exception as e:
+        # print error message for debugging
+        if debugging:
+            print("Error: ", e)
+    finally:
+        print("Powering down...")
+        # close file for memory safety
+        output_file.close()
+        # reset brick and exit
+        reset_brick()
         exit()
 
 
 if __name__=='__main__':
-    print(f"Welcome to Colour Wheel v{VERSION}")
+    print(f"\n\nWelcome to Colour Wheel v{VERSION}")
     print("Turn the wheel to select a note, then play it by pressing the button")
-    main_loop()
-    print("Powering down...")
+    main_loop(debugging=True)
+    print("Powered down.")
