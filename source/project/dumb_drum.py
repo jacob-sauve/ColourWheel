@@ -20,9 +20,9 @@ print(motor.get_position())
 
 # Prevents position control from going over either:
 # 50% power or 90 deg/sec, whichever is slower
-#motor.set_limits(power=50, dps=90)
+motor.set_limits(power=50, dps=90)
 
-motor.set_limits() # UNLIMITED POWER (AND SPEED)
+#motor.set_limits() # UNLIMITED POWER (AND SPEED)
 
 # Will rotate 180 degrees backwards from current position.
 # Does not care about the absolute position.
