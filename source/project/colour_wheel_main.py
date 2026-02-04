@@ -22,14 +22,21 @@ EMERGENCY_STOP = TouchSensor(3)
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 
 # wait for EV3ColorSensor to initialise (TouchSensor has no init time)
-wait_ready_sensors()
+wait_ready_sensors(True)
+
+
+def classify(rgb):
+	"""Return pitch corresponding to given RGB input. Currently dummy (random select)"""
+	from random import randint
+	return randint(3000,7000)
 
 
 def play_sound(pitch):
-    """Play a single note of pitch pitch"""
-    SOUND.pitch = pitch
-    SOUND.play()
-    SOUND.wait_done()
+	"""Play a single note of pitch pitch"""
+	SOUND.set_pitch(pitch)
+	SOUND.update_audio()
+	SOUND.play()
+	SOUND.wait_done()
 
 def main_loop(debugging=False):
     try:
