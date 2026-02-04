@@ -65,6 +65,7 @@ def main_loop(debugging=False):
                 # reset flag
                 played = False
             sleep(0.1)
+        output_file.close()
         raise Exception("EMERGENCY STOP ACTIVATED")
     except Exception as e:
         # print error message for debugging
