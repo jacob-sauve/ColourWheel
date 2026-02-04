@@ -2,7 +2,7 @@
 
 """
 Colour Wheel software implementation
-v0.2
+v0.4
 """
 
 # import modules
@@ -11,7 +11,7 @@ from utils import sound
 from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
 
 # constants
-VERSION = 0.2
+VERSION = 0.4
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
