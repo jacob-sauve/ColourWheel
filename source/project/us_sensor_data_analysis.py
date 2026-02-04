@@ -4,7 +4,7 @@ import numpy as np
 
 
 def analyse_pseudo_csv(filepath):
-    """analyse us sensor output from file at filepath"""
+    """analyse us sensor output from file at filepath and output mean, SD, min and max as a dict"""
     data = list()
     output = dict()
     with open(filepath, 'r') as file:
@@ -17,4 +17,5 @@ def analyse_pseudo_csv(filepath):
 
 
 if __name__ == "__main__":
+    # run code with output filepath as command line argument
     print(analyse_pseudo_csv(sys.argv[1]))
