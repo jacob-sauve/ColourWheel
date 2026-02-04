@@ -2,12 +2,15 @@
 
 """
 Module to play sounds when the touch sensor is pressed.
-This file must be run on the robot.
+Modified to also allow for soundless touch sensor reliability testing
+(i.e., ensure every press is received)
 """
- 
+
+# import modules
 from utils import sound
 from utils.brick import TouchSensor, wait_ready_sensors
 
+# constants
 SOUND = sound.Sound(duration=0.3, pitch="A4", volume=60)
 TOUCH_SENSOR = TouchSensor(1)
 
@@ -15,15 +18,15 @@ wait_ready_sensors() # Note: Touch sensors actually have no initialization time
 
 
 def play_sound():
-    "Play a single note."
+    """Play a single note."""
     SOUND.play()
     SOUND.wait_done()
 
 
 def play_sound_on_button_press(testing_speaker=False):
-    "In an infinite loop, play a single note when the touch sensor is pressed."
-    n_clicks = 0
-    message_printed = False
+    """In an infinite loop, play a single note when the touch sensor is pressed."""
+    n_clicks = 0 # count number of clicks
+    message_printed = False # flag to register one click per press even if button held down
     try:
         while True:
             touch_sensor_pressed = TOUCH_SENSOR.is_pressed()
@@ -35,16 +38,16 @@ def play_sound_on_button_press(testing_speaker=False):
                 if testing_speaker:
                     play_sound()
             else:
+                # reset flag on button release
                 message_printed = False
     except BaseException:  # capture all exceptions including KeyboardInterrupt (Ctrl-C)
         exit()
 
 
 if __name__=='__main__':
-    play_sound()
-
+    play_sound() # beep to indicate entry into program
     while True:
-        # TODO Implement this function
+        # get user to select testing mode
         choice = input("Choose test sound or test reliability (s/r): ").strip().lower()[0] 
         if (choice == "s"):
             print("Testing sound") 
