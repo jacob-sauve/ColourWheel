@@ -39,10 +39,13 @@ def collect_color_sensor_data():
                 measured = False
             time.sleep(0.1)
     except Exception as e:
+        # print error message for debugging
         print("Error: ", e)
     finally:
         print("Done collecting color sensor data")
+        # close file for memory safety
         output_file.close()
+        # reset brick and exit
         reset_brick()
         exit()
 
