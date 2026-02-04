@@ -2,7 +2,7 @@
 
 """
 Colour Wheel software implementation
-v0.4
+v0.5
 """
 
 # import modules
@@ -11,7 +11,7 @@ from utils import sound
 from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
 
 # constants
-VERSION = 0.4
+VERSION = 0.5
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
@@ -20,15 +20,16 @@ TOUCH_SENSOR = TouchSensor(1)
 COLOR_SENSOR = EV3ColorSensor(2)
 EMERGENCY_STOP = TouchSensor(3)
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
+COLOURS = {"A4":440.0, "C4":261.63}
 
 # wait for EV3ColorSensor to initialise (TouchSensor has no init time)
 wait_ready_sensors(True)
 
 
 def classify(rgb):
-	"""Return pitch corresponding to given RGB input. Currently dummy (random select)"""
-	from random import randint
-	return randint(3000,7000)
+	"""Return pitch corresponding to given RGB input. Currently dummy (binary select)"""
+	from statistics import mean
+    return COLOURS["A4"] if mean(rgb) > 50 else COLOURS["C4"]
 
 
 def play_sound(pitch):
