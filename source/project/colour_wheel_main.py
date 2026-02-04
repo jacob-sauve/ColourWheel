@@ -29,7 +29,7 @@ wait_ready_sensors(True)
 def classify(rgb):
 	"""Return pitch corresponding to given RGB input. Currently dummy (binary select)"""
 	from statistics import mean
-    return COLOURS["A4"] if mean(rgb) > 50 else COLOURS["C4"]
+	return COLOURS["A4"] if mean(rgb) > 50 else COLOURS["C4"]
 
 
 def play_sound(pitch):
