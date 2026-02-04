@@ -1,22 +1,13 @@
-from utils.brick import Motor, TouchSensor, wait_ready_sensors
+from utils.brick import Motor, TouchSensor, wait_ready_sensors, reset_brick
 import time
 
 motor = Motor("A")
 STOP = TouchSensor(3)
 
+wait_ready_sensors(True)
+
 # Designates to Encoder, that the current physical position is 0 degrees
 motor.reset_encoder()
-
-# Rotate to position that is 720 degrees away from the 0 position
-motor.set_position(720)
-time.sleep(2) # Wait to finish
-motor.set_position(720) # This does nothing, because we are here
-motor.set_position(700) # Move backwards 20 degrees
-time.sleep(1)
-
-# Returns the current position for you. So you know where you are.
-print(motor.get_position())
-
 
 # Prevents position control from going over either:
 # 50% power or 90 deg/sec, whichever is slower
@@ -30,4 +21,5 @@ while not STOP.is_pressed():
     motor.set_position_relative(motor.get_position()-10)
     time.sleep(2)
 print("Stopped")
-
+reset_brick()
+exit()
