@@ -15,7 +15,7 @@ motor.set_limits(power=80, dps=360)
 
 #motor.set_limits() # UNLIMITED POWER (AND SPEED)
 
-# Will rotate 180 degrees backwards from current position.
+# Will rotate 10 degrees backwards from current position.
 # Does not care about the absolute position.
 while not STOP.is_pressed():
     motor.set_position_relative(90)
