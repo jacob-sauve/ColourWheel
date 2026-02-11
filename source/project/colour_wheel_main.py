@@ -2,13 +2,15 @@
 
 """
 Colour Wheel software implementation
-v0.5
+v0.9
 """
 
 # import modules
 from time import sleep
 from utils import sound
 from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
+import math
+from classtest import classify
 
 # constants
 VERSION = 0.5
@@ -19,18 +21,13 @@ SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
 TOUCH_SENSOR = TouchSensor(1)
 COLOR_SENSOR = EV3ColorSensor(2)
 EMERGENCY_STOP = TouchSensor(3) # emergency stop TouchSensor (port 3)
+POLLING_DELAY = 0.05 # in seconds
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
-COLOURS = {"A4":440.0, "C4":261.63}
+NOTES = {"D5":587.33,"G5":783.99, "C5":523.25, "E5":659.25}
+COLOURS = {"red":"C5", "purple":"D5", "green":"E5", "orange":"G5"}
 
 # wait for EV3ColorSensor to initialise (TouchSensor has no init time)
 wait_ready_sensors(True)
-
-
-def classify(rgb):
-	"""Return pitch corresponding to given RGB input. Currently dummy (binary select)"""
-	from statistics import mean
-	return COLOURS["A4"] if mean(rgb) > 50 else COLOURS["C4"]
-
 
 def play_sound(pitch):
 	"""Play a single note of pitch pitch"""
@@ -55,16 +52,19 @@ def main_loop(debugging=False):
                         # additional print debugging if in debug mode
                         print("touch sensor pressed")
                         print(f"{color_data=}")
-                    if None not in color_data:
-                        note = classify(color_data)
+                    try:
+                        note = NOTES[COLOURS[classify(color_data)]]
                         print(f"playing note {note}")
                         play_sound(note)
                         output_file.write(f"{color_data}\t{note}\n")
-                    played = True
+                    except:
+                        print("INVALID INPUT")
+                    finally:
+                        played = True
             else:
                 # reset flag
                 played = False
-            sleep(0.1)
+            sleep(POLLING_DELAY)
         output_file.close()
         raise Exception("EMERGENCY STOP ACTIVATED")
     except Exception as e:
