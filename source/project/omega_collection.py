@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This test is used to collect data from the color sensor.
-It must be run on the robot.
+This test is used to collect hue-adjacent values ("omega" values) for a brick.
 """
 
 # imported modules
@@ -13,19 +12,14 @@ from classtest import classify
 # constants
 COLOR_SENSOR_DATA_FILE = "../data_analysis/omega_values.csv"
 
-# complete this based on your hardware setup
-COLOR_SENSOR = EV3ColorSensor(2)
-TOUCH_SENSOR = TouchSensor(1)
 
-wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
-
-def collect_color_sensor_data():
+def collect_brick_omega_values(color_sensor, touch_sensor):
     try:
         measured = False # flag to only measure once per click
         output_file = open(COLOR_SENSOR_DATA_FILE, "w")
         while True:
-            is_pressed = TOUCH_SENSOR.is_pressed()
-            color_data = COLOR_SENSOR.get_rgb()
+            is_pressed = touch_sensor.is_pressed()
+            color_data = color_sensor.get_rgb()
             if is_pressed:
                 if not measured:
                     # only register click if not already done for this
@@ -56,4 +50,6 @@ def collect_color_sensor_data():
         exit()
 
 if __name__ == "__main__":
-    collect_color_sensor_data()
+    from setup_brickpi import setup_ports
+    TOUCH_SENSOR, COLOR_SENSOR = setup_ports(play_button=True, color_sensor=True)
+    collect_brick_omega_values(COLOR_SENSOR, TOUCH_SENSOR)
