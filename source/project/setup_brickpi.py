@@ -5,18 +5,18 @@ Setup the BrickPi sensors
 """
 
 # import modules
-from utils.brick import TouchSensor, wait_ready_sensors, EV3UltrasonicSensor, EV3ColorSensor
+from utils.brick import TouchSensor, wait_ready_sensors, EV3UltrasonicSensor, EV3ColorSensor, Motor
 
 # constants
 PLAY_BUTTON = 1         # for flute actuation
 COLOR_SENSOR = 2
 EMERGENCY_STOP = 3
 US_SENSOR = 4           # drum button
-DRUM_MOTOR = "A"        # drum motor 
+DRUM_MOTOR = "D"        # drum motor 
 
 
 def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_sensor=False, drum_motor=False):
-    """Connect sensors to standard ports"""
+    """Connect sensors and motor to standard ports"""
     ports = list()
     if play_button:
         ports.append(TouchSensor(PLAY_BUTTON))
