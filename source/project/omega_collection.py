@@ -6,7 +6,7 @@ This test is used to collect hue-adjacent values ("omega" values) for a brick.
 
 # imported modules
 import time
-from utils.brick import BP, EV3ColorSensor, wait_ready_sensors, TouchSensor, reset_brick
+from utils.brick import BP, EV3ColorSensor, TouchSensor, reset_brick
 from classtest import classify
 
 # constants
