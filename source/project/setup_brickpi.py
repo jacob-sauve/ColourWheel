@@ -7,7 +7,7 @@ Setup the BrickPi sensors & actuator
 # import modules
 from utils.brick import TouchSensor, wait_ready_sensors, EV3UltrasonicSensor, EV3ColorSensor, Motor
 
-# constants
+# STANDARD PORTS FOR ALL TESTS + MAIN CODE
 PLAY_BUTTON = 1         # for flute actuation
 COLOR_SENSOR = 2
 EMERGENCY_STOP = 3
