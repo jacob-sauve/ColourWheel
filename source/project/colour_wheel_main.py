@@ -2,7 +2,7 @@
 
 """
 Colour Wheel software implementation, main loop
-v0.9.1
+v0.9.2
 2026-02-12
 """
 
