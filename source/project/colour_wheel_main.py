@@ -2,32 +2,28 @@
 
 """
 Colour Wheel software implementation
-v0.9
+v0.9.1
 """
 
 # import modules
 from time import sleep
 from utils import sound
-from utils.brick import TouchSensor, wait_ready_sensors, BP, EV3ColorSensor, reset_brick
+from utils.brick import BP, reset_brick
 import math
 from classtest import classify
+from setup_brickpi import setup_sensors
 
 # constants
-VERSION = 0.5
+VERSION = 0.9.1
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
 # connect TouchSensor to port 1, ColorSensor to port 2
-TOUCH_SENSOR = TouchSensor(1)
-COLOR_SENSOR = EV3ColorSensor(2)
-EMERGENCY_STOP = TouchSensor(3) # emergency stop TouchSensor (port 3)
 POLLING_DELAY = 0.05 # in seconds
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 NOTES = {"D5":587.33,"G5":783.99, "C5":523.25, "E5":659.25}
 COLOURS = {"red":"C5", "purple":"D5", "green":"E5", "orange":"G5"}
 
-# wait for EV3ColorSensor to initialise (TouchSensor has no init time)
-wait_ready_sensors(True)
 
 def play_sound(pitch):
 	"""Play a single note of pitch pitch"""
@@ -81,6 +77,7 @@ def main_loop(debugging=False):
 
 
 if __name__=='__main__':
+    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP = setup_sensors(play_button=True, emergency_stop=True, color_sensor=True)
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
     print("Turn the wheel to select a note, then play it by pressing the button")
     main_loop(debugging=True)

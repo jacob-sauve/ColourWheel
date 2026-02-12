@@ -2,13 +2,19 @@
 
 """
 This script calibrates the color sensor by collecting profiles of different blocks
+For each block:
+1. collect raw color profile data points
+2. calculate mean and SD
+3. remove outliers (+/- >1 SD from mean)
+4. calculate and save new representative mean
+5. associate to a note
 """
 
 # imported modules
 import time
 from utils.brick import BP, EV3ColorSensor, wait_ready_sensors, TouchSensor, reset_brick
 from classtest import classify
-from statistics import mean
+from statistics import mean, stdev
 
 # constants
 POLLING_DELAY = 0.1 # seconds
@@ -19,6 +25,11 @@ COLOR_SENSOR = EV3ColorSensor(3)
 TOUCH_SENSOR = TouchSensor(1)
 
 wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
+
+
+
+
+
 
 def calibrate_color(color):
     try:
