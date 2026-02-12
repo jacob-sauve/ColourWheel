@@ -12,9 +12,6 @@ from utils.brick import TouchSensor, wait_ready_sensors
 
 # constants
 SOUND = sound.Sound(duration=0.3, pitch="A4", volume=60)
-TOUCH_SENSOR = TouchSensor(1)
-
-wait_ready_sensors() # Note: Touch sensors actually have no initialization time
 
 
 def play_sound():
@@ -45,7 +42,12 @@ def play_sound_on_button_press(testing_speaker=False):
 
 
 if __name__=='__main__':
+    from setup_brickpi import setup_ports
+    TOUCH_SENSOR = setup_ports(play_button=True)
+    
+    print("Playing test tone...")
     play_sound() # beep to indicate entry into program
+    
     while True:
         # get user to select testing mode
         choice = input("Choose test sound or test reliability (s/r): ").strip().lower()[0] 
