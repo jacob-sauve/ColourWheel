@@ -1,4 +1,11 @@
-from utils.brick import Motor, TouchSensor, wait_ready_sensors, reset_brick
+#!/usr/bin/env python3
+
+"""
+Code to control motor for mechanical drum.
+The drum is toggled on/off by pressing a "button" (US sensor).
+"""
+
+from utils.brick import Motor, TouchSensor, reset_brick
 import time
 from setup_brickpi import setup_ports
 
