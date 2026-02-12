@@ -59,5 +59,5 @@ def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_
                 if verbose:
                     print(f"\t*{port_map[varname]["label"]} to port S{port_map[varname]["port"]}")
                 ports.append(port_map[varname]["function"](port_map[varname]["port"]))
-            wait_ready_sensors(True)
+    wait_ready_sensors(True)
     return ports
