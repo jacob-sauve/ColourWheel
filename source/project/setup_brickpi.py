@@ -50,10 +50,11 @@ def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_
     Connect sensors and motor to standard ports
     Output order: play_button, color_sensor, emergency_stop, us_sensor, drum_motor
     """
+    arg_dict = locals()
     ports = list()
     if verbose:
         print("Connect the following:")
-    for varname, flag in locals():
+    for varname, flag in arg_dict:
         if varname != "verbose":
             if flag:
                 if verbose:
