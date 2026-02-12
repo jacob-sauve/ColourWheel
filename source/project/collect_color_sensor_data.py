@@ -12,11 +12,6 @@ from utils.brick import BP, EV3ColorSensor, wait_ready_sensors, TouchSensor, res
 # constants
 COLOR_SENSOR_DATA_FILE = "../data_analysis/color_sensor.csv"
 
-# complete this based on your hardware setup
-COLOR_SENSOR = EV3ColorSensor(3)
-TOUCH_SENSOR = TouchSensor(1)
-
-wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
 
 def collect_color_sensor_data():
     try:
@@ -50,4 +45,6 @@ def collect_color_sensor_data():
         exit()
 
 if __name__ == "__main__":
+    from setup_brickpi import setup_ports
+    TOUCH_SENSOR, COLOR_SENSOR = setup_ports(play_button=True, color_sensor=True)
     collect_color_sensor_data()
