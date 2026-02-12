@@ -16,7 +16,10 @@ DRUM_MOTOR = "D"        # drum motor
 
 
 def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_sensor=False, drum_motor=False):
-    """Connect sensors and motor to standard ports"""
+    """
+    Connect sensors and motor to standard ports
+    Output order: play_button, color_sensor, emergency_stop, us_sensor, drum_motor
+    """
     ports = list()
     print("Connect the following:")
     if play_button:
