@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Code to control motor for mechanical drum.
+Code to test control of motor for mechanical drum.
 The drum is toggled on/off by pressing a "button" (US sensor).
 """
 
