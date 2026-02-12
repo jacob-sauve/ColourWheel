@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 """
-Colour Wheel software implementation
+Colour Wheel software implementation, main loop
 v0.9.1
+2026-02-12
 """
 
 # import modules
