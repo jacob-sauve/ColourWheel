@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Setup the BrickPi sensors
+Setup the BrickPi sensors & actuator
 """
 
 # import modules
