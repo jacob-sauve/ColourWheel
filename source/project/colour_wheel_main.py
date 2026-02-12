@@ -14,7 +14,7 @@ from classtest import classify
 from setup_brickpi import setup_ports
 
 # constants
-VERSION = 0.9.1
+VERSION = "0.9.1" 
 DURATION = 0.3
 VOLUME = 90
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)

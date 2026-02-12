@@ -1,10 +1,8 @@
 from utils.brick import Motor, TouchSensor, wait_ready_sensors, reset_brick
 import time
+from setup_brickpi import setup_ports
 
-motor = Motor("A")
-STOP = TouchSensor(3)
-
-wait_ready_sensors(True)
+STOP, motor = setup_ports(emergency_stop=True, drum_motor=True)
 
 # Designates to Encoder, that the current physical position is 0 degrees
 motor.reset_encoder()
