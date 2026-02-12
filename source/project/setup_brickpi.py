@@ -12,18 +12,21 @@ PLAY_BUTTON = 1         # for flute actuation
 COLOR_SENSOR = 2
 EMERGENCY_STOP = 3
 US_SENSOR = 4           # drum button
+DRUM_MOTOR = "A"        # drum motor 
 
 
-def setup_sensors(play_button=False, color_sensor=False, emergency_stop=False, us_sensor=False):
+def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_sensor=False, drum_motor=False):
     """Connect sensors to standard ports"""
-    sensors = list()
+    ports = list()
     if play_button:
-        sensors.append(TouchSensor(PLAY_BUTTON))
+        ports.append(TouchSensor(PLAY_BUTTON))
     if color_sensor:
-        sensors.append(EV3ColorSensor(COLOR_SENSOR))
+        ports.append(EV3ColorSensor(COLOR_SENSOR))
     if emergency_stop:
-        sensors.append(TouchSensor(EMERGENCY_STOP))
+        ports.append(TouchSensor(EMERGENCY_STOP))
     if us_sensor:
-        sensors.append(EV3UltrasonicSensor(US_SENSOR))
+        ports.append(EV3UltrasonicSensor(US_SENSOR))
+    if drum_motor:
+        ports.append(Motor(DRUM_MOTOR))
     wait_ready_sensors(True)
-    return sensors
+    return ports

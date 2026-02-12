@@ -11,7 +11,7 @@ from utils import sound
 from utils.brick import BP, reset_brick
 import math
 from classtest import classify
-from setup_brickpi import setup_sensors
+from setup_brickpi import setup_ports
 
 # constants
 VERSION = 0.9.1
@@ -77,7 +77,7 @@ def main_loop(debugging=False):
 
 
 if __name__=='__main__':
-    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP = setup_sensors(play_button=True, emergency_stop=True, color_sensor=True)
+    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP = setup_ports(play_button=True, emergency_stop=True, color_sensor=True)
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
     print("Turn the wheel to select a note, then play it by pressing the button")
     main_loop(debugging=True)
