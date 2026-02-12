@@ -20,15 +20,22 @@ from statistics import mean, stdev
 POLLING_DELAY = 0.1 # seconds
 CALIBRATION_DATA_PATH = "../calibration_data/"
 
-# complete this based on your hardware setup
-COLOR_SENSOR = EV3ColorSensor(3)
-TOUCH_SENSOR = TouchSensor(1)
 
-wait_ready_sensors(True) # Input True to see what the robot is trying to initialize! False to be silent.
-
-
-
-
+def fix(dataset, output_filepath):
+    """Remove outliers from 1D dataset, return mean without outliers, write data points to filepath"""
+    raw_mean = mean(dataset)
+    raw_sd = stdev(dataset)
+    no_outliers = list(dataset)
+    for val in dataset:
+        if abs(val-mean) > raw_sd:
+            no_outliers.remove(val)
+    try:
+        with open(output_filepath, "w") as file:
+            for val in dataset:
+                file.write(val)
+    except:
+        print("file-writing failed")
+    return mean(no_outliers)
 
 
 def calibrate_color(color):
@@ -66,6 +73,8 @@ def calibrate_color(color):
         exit()
 
 if __name__ == "__main__":
+    from setup_brickpi import setup_sensors
+    PlAY_BUTTON, COLOR_SENSOR, EMERGENCY_STOP = setup_sensors(play_button=True, color_sensor=True, emergency_stop=True)
     for note in ["C5", "D5", "E5", "G5"]:
         color = input("color name: ")
         calibrate_color(color)
