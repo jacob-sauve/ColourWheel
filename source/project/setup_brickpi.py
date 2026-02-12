@@ -20,19 +20,19 @@ def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_
     ports = list()
     print("Connect the following:")
     if play_button:
-        print(f"\t*play button (touch) to port {PLAY_BUTTON}")
+        print(f"\t*play button (touch) to port S{PLAY_BUTTON}")
         ports.append(TouchSensor(PLAY_BUTTON))
     if color_sensor:
-        print(f"\t*color sensor to port {COLOR_SENSOR}")
+        print(f"\t*color sensor to port S{COLOR_SENSOR}")
         ports.append(EV3ColorSensor(COLOR_SENSOR))
     if emergency_stop:
-        print(f"\t*emergency stop (touch) to port {EMERGENCY_STOP}")
+        print(f"\t*emergency stop (touch) to port S{EMERGENCY_STOP}")
         ports.append(TouchSensor(EMERGENCY_STOP))
     if us_sensor:
-        print(f"\t*drum button (US) to port {US_SENSOR}")
+        print(f"\t*drum button (US) to port S{US_SENSOR}")
         ports.append(EV3UltrasonicSensor(US_SENSOR))
     if drum_motor:
-        print(f"\t*drum motor to port {DRUM_MOTOR}")
+        print(f"\t*drum motor to port M{DRUM_MOTOR}")
         ports.append(Motor(DRUM_MOTOR))
     wait_ready_sensors(True)
     return ports
