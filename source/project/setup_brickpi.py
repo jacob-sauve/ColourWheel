@@ -54,11 +54,11 @@ def setup_ports(play_button=False, color_sensor=False, emergency_stop=False, us_
     ports = list()
     if verbose:
         print("Connect the following:")
-    for varname, flag in arg_dict:
+    for varname, flag in arg_dict.items():
         if varname != "verbose":
             if flag:
                 if verbose:
-                    print(f"\t*{port_map[varname]["label"]} to port S{port_map[varname]["port"]}")
+                    print(f"\t*{port_map[varname]['label']} to port S{port_map[varname]['port']}")
                 ports.append(port_map[varname]["function"](port_map[varname]["port"]))
     wait_ready_sensors(True)
     return ports

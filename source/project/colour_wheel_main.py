@@ -39,7 +39,7 @@ def main_loop(debugging=False, write_to_file=False):
         # set drum parameters
         direction, toggled_yet, drum_on = drum_setup(motor=MOTOR, debugging=debugging)
 		# for a posteriori debugging
-		if write_to_file:
+        if write_to_file:
         	output_file = open(COLOR_SENSOR_DATA_FILE, "w")
 	        output_file.write("color_data\tnote\n")
         while not EMERGENCY_STOP.is_pressed():
@@ -57,7 +57,7 @@ def main_loop(debugging=False, write_to_file=False):
                         note = NOTES[COLOURS[classify(color_data)]]
                         print(f"playing note {note}")
                         play_sound(note)
-						if write_to_file:
+                        if write_to_file:
                         	output_file.write(f"{color_data}\t{note}\n")
                     except:
                         print("INVALID INPUT")
@@ -77,7 +77,7 @@ def main_loop(debugging=False, write_to_file=False):
                     debugging = debugging
                     )
             sleep(POLLING_DELAY)
-		if write_to_file:
+        if write_to_file:
         	output_file.close()
         raise Exception("EMERGENCY STOP ACTIVATED")
     except Exception as e:
@@ -87,7 +87,7 @@ def main_loop(debugging=False, write_to_file=False):
     finally:
         print("Powering down...")
         # close file for memory safety
-		if write_to_file:
+        if write_to_file:
         	output_file.close()
         # reset brick and exit
         reset_brick()
