@@ -2,7 +2,7 @@
 
 """
 Colour Wheel software implementation, main loop
-v1.0.0
+v2.0.0
 2026-02-13
 """
 
@@ -20,7 +20,7 @@ VERSION = "0.9.1"
 DURATION = 0.3			# seconds, length of each note
 VOLUME = 90				# decibels, of speaker
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
-POLLING_DELAY = 0.05 	# in seconds, for color sensor
+POLLING_DELAY = 0.1 	# in seconds, for color sensor
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 NOTES = {"D5":587.33,"G5":783.99, "C5":523.25, "E5":659.25}
 COLOURS = {"red":"C5", "purple":"D5", "green":"E5", "orange":"G5"}

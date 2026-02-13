@@ -22,7 +22,7 @@ import time
 INSTRUCTION_BUFFER = 0.15   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
 POWER = 80                  # percent, maximum
 DPS = 360                   # degrees per second, maximum
-US_TRIGGER_DISTANCE = 2     # centimetres, maximal distance for US sensor to detect "press"
+US_TRIGGER_DISTANCE = 4.0   # centimetres, maximal distance for US sensor to detect "press"
 
 
 def is_pressed(us_sensor, debugging=False):
@@ -67,7 +67,7 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, de
             drum_on = not drum_on
             if debugging:
                 print(f"us sensor 'pressed'; toggling drum state to {drum_on}")
-            toggled_yet = Trye
+            toggled_yet = True
         else:
             # reset flag
             toggled_yet = False
@@ -75,6 +75,8 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, de
     # run drum if toggled:
     if drum_on:
         # added direction to have emergency stop + US sensor verification 2x more frequently
+        if debugging:
+            print(f"turning {direction} * 90 degrees")
         motor.set_position_relative(direction * 90)
         direction  *= -1        # swing opposite way
     # wait outside loop to not overload US sensor when not drumming, only if main loop has insufficient delay
@@ -102,7 +104,7 @@ def drum_loop(stop, drum_button, motor, debugging=False):
 if __name__ == "__main__":
     # for self-contained testing
     from setup_brickpi import setup_ports
-    from utils.brickpi import reset_brick
+    from utils.brick import reset_brick
 
     stop, drum_button, motor = setup_ports(emergency_stop=True, us_sensor=True, drum_motor=True)
     
