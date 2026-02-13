@@ -40,40 +40,6 @@ def is_pressed(us_sensor, debugging=False):
         return False
 
 
-def drum_loop(stop, drum_button, motor, debugging=False):
-    """runs drum when toggled by US sensor and while emergency stop not pressed"""
-    # Designates to Encoder, that the current physical position is 0 degrees
-    motor.reset_encoder()
-
-    # Prevents position control from going over either:
-    # 80% power or 360 deg/sec, whichever is slower
-    motor.set_limits(power=POWER, dps=DPS)
-
-    direction = +1
-    toggled_yet = False     # flag to only toggle state once per button press
-    drum_on = False
-    # run until emergency stop is actuated
-    while not stop.is_pressed():
-        pressed = is_pressed(drum_button, debugging=debugging)
-        if pressed:
-            if not toggled_yet:
-                # only register click once per button-press
-                drum_on = not drum_on
-                if debugging:
-                    print(f"us sensor 'pressed'; toggling drum state to {drum_on}")
-                toggled_yet = True
-        else:
-            # reset flag
-            toggled_yet = False
-        
-        # run drum if toggled
-        if drum_on:
-            # added direction to have emergency stop + US sensor verification twice as frequently
-            motor.set_position_relative(direction * 90)
-            direction *= -1
-        # wait outside loop to not overload US sensor when not drumming
-        time.sleep(INSTRUCTION_BUFFER)
-
 def drum_setup(motor, power=POWER, dps=DPS, debugging=False):
     """setup already initialized drum stored in variable motor"""
     # indicate to encoder that current pos is 0 degrees
@@ -114,7 +80,24 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, de
     # wait outside loop to not overload US sensor when not drumming, only if main loop has insufficient delay
     time.sleep(extra_delay)
     return direction, toggled_yet, drum_on
-    
+
+
+def drum_loop(stop, drum_button, motor, debugging=False):
+    """runs drum when toggled by US sensor and while emergency stop not pressed"""
+    direction, toggled_yet, drum_on = drum_setup(motor, debugging=debugging)
+    # run until emergency stop is actuated
+    while not stop.is_pressed():
+        direction, toggled_yet, drum_on = drum_iteration(
+            stop,
+            drum_button,
+            motor,
+            direction,
+            toggled_yet,
+            drum_on,
+            debugging = debugging,
+            extra_delay = INSTRUCTION_BUFFER    # to not overload US sensor or motor
+        )
+
 
 if __name__ == "__main__":
     # for self-contained testing
