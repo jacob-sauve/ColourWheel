@@ -47,7 +47,7 @@ def drum_loop(stop, drum_button, motor, debugging=False):
 
     # Prevents position control from going over either:
     # 80% power or 360 deg/sec, whichever is slower
-    motor.set_limits(power=80, dps=360)
+    motor.set_limits(power=POWER, dps=DPS)
 
     direction = +1
     toggled_yet = False     # flag to only toggle state once per button press
@@ -73,6 +73,48 @@ def drum_loop(stop, drum_button, motor, debugging=False):
             direction *= -1
         # wait outside loop to not overload US sensor when not drumming
         time.sleep(INSTRUCTION_BUFFER)
+
+def drum_setup(motor, power=POWER, dps=DPS, debugging=False):
+    """setup already initialized drum stored in variable motor"""
+    # indicate to encoder that current pos is 0 degrees
+    motor.reset_encoder()
+    # max out at the slowest between power% power and dps deg/sec
+    motor.set_limits(power=POWER, dps=DPS)
+    direction, toggled_yet, drum_on = +1, False, False
+    if debugging:
+        print(""" ______  __  __  __  __           ____    ____    ____
+/\__  _\/\ \/\ \/\ \/\ \  /'\_/`\/\  _`\ /\  _`\ /\  _`\
+\/_/\ \/\ \ \_\ \ \ \ \ \/\      \ \ \L\ \ \ \L\_\ \ \L\ \
+   \ \ \ \ \  _  \ \ \ \ \ \ \__\ \ \ ,__/\ \  _\L\ \ ,  /
+    \ \ \ \ \ \ \ \ \ \_\ \ \ \_/\ \ \ \/  \ \ \L\ \ \ \\ \
+     \ \_\ \ \_\ \_\ \_____\ \_\\ \_\ \_\   \ \____/\ \_\ \_\
+      \/_/  \/_/\/_/\/_____/\/_/ \/_/\/_/    \/___/  \/_/\/ /"""+ "\n\n... initialised successfully.")
+    return direction, toggled_yet, drum_on
+
+
+def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, debugging=False, extra_delay=0):
+    """single iteration of drum_loop, for integration with colour_wheel_main.py"""
+    pressed = is_pressed(drum_button, debugging=debugging)
+    if pressed:
+        if not toggled_yet:
+            # only register click once per button-press
+            drum_on = not drum_on
+            if debugging:
+                print(f"us sensor 'pressed'; toggling drum state to {drum_on}")
+            toggled_yet = Trye
+        else:
+            # reset flag
+            toggled_yet = False
+    
+    # run drum if toggled:
+    if drum_on:
+        # added direction to have emergency stop + US sensor verification 2x more frequently
+        motor.set_position_relative(direction * 90)
+        direction  *= -1        # swing opposite way
+    # wait outside loop to not overload US sensor when not drumming, only if main loop has insufficient delay
+    time.sleep(extra_delay)
+    return direction, toggled_yet, drum_on
+    
 
 if __name__ == "__main__":
     # for self-contained testing
