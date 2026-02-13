@@ -31,7 +31,7 @@ def play_sound(pitch):
 	SOUND.set_pitch(pitch)
 	SOUND.update_audio()
 	SOUND.play()
-	SOUND.wait_done()
+	# SOUND.wait_done()
 
 def main_loop(debugging=False, write_to_file=False):
     try:

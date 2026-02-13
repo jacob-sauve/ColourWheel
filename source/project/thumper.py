@@ -48,13 +48,7 @@ def drum_setup(motor, power=POWER, dps=DPS, debugging=False):
     motor.set_limits(power=POWER, dps=DPS)
     direction, toggled_yet, drum_on = +1, False, False
     if debugging:
-        print(""" ______  __  __  __  __           ____    ____    ____
-/\__  _\/\ \/\ \/\ \/\ \  /'\_/`\/\  _`\ /\  _`\ /\  _`\
-\/_/\ \/\ \ \_\ \ \ \ \ \/\      \ \ \L\ \ \ \L\_\ \ \L\ \
-   \ \ \ \ \  _  \ \ \ \ \ \ \__\ \ \ ,__/\ \  _\L\ \ ,  /
-    \ \ \ \ \ \ \ \ \ \_\ \ \ \_/\ \ \ \/  \ \ \L\ \ \ \\ \
-     \ \_\ \ \_\ \_\ \_____\ \_\\ \_\ \_\   \ \____/\ \_\ \_\
-      \/_/  \/_/\/_/\/_____/\/_/ \/_/\/_/    \/___/  \/_/\/ /""".replace("\\","\\\\")+ "\n\n... initialised successfully.")
+        print("\n\n... initialised successfully.")
     return direction, toggled_yet, drum_on
 
 
