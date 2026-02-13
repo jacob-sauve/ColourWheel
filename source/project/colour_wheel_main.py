@@ -2,8 +2,8 @@
 
 """
 Colour Wheel software implementation, main loop
-v0.9.2
-2026-02-12
+v1.0.0
+2026-02-13
 """
 
 # import modules
@@ -13,7 +13,7 @@ from utils.brick import BP, reset_brick
 import math
 from classtest import classify
 from setup_brickpi import setup_ports
-from thumper import drum_loop
+from thumper import drum_setup, drum_iteration
 
 # constants
 VERSION = "0.9.1" 
@@ -35,7 +35,9 @@ def play_sound(pitch):
 
 def main_loop(debugging=False, write_to_file=False):
     try:
-        played = False # flag to only play audio once per click
+        played = False      # flag to only play audio once per click
+        # set drum parameters
+        direction, toggled_yet, drum_on = drum_setup(motor=MOTOR, debugging=debugging)
 		# for a posteriori debugging
 		if write_to_file:
         	output_file = open(COLOR_SENSOR_DATA_FILE, "w")
@@ -64,6 +66,16 @@ def main_loop(debugging=False, write_to_file=False):
             else:
                 # reset flag
                 played = False
+            # update drum
+            direction, toggled_yet, drum_on = drum_iteration(
+                    stop = EMERGENCY_STOP,
+                    drum_button = US_SENSOR,
+                    motor = MOTOR,
+                    direction = direction,
+                    toggled_yet = toggled_yet,
+                    drum_on = drum_on,
+                    debugging = debugging
+                    )
             sleep(POLLING_DELAY)
 		if write_to_file:
         	output_file.close()
@@ -83,10 +95,8 @@ def main_loop(debugging=False, write_to_file=False):
 
 
 if __name__=='__main__':
-	# for drum, add US_SENSOR and MOTOR in the correct order (see setup_brickpi)
-    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP = setup_ports(play_button=True, emergency_stop=True, color_sensor=True)
+    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP, US_SENSOR, MOTOR = setup_ports(play_button=True, emergency_stop=True, color_sensor=True, us_sensor=True, drum_motor=True)
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
     print("Turn the wheel to select a note, then play it by pressing the button")
     main_loop(debugging=True)
-	# drum_loop(EMERGENCY_STOP, US_SENSOR, MOTOR)	# may have to run threading for this
     print("Powered down.")
