@@ -95,8 +95,16 @@ def main_loop(debugging=False, write_to_file=False):
 
 
 if __name__=='__main__':
-    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP, US_SENSOR, MOTOR = setup_ports(play_button=True, emergency_stop=True, color_sensor=True, us_sensor=True, drum_motor=True)
+    TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP, US_SENSOR, MOTOR = setup_ports(
+            play_button=True,
+            emergency_stop=True,
+            color_sensor=True,
+            us_sensor=True,
+            drum_motor=True
+        )
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
-    print("Turn the wheel to select a note, then play it by pressing the button")
+    print("Turn the wheel to select a note, then play it by pressing the button!")
+    print("Use the ultrasonic sensor as a button to toggle the drum on/off")
+    print("The emergency stop button can be used to shut down the system")
     main_loop(debugging=True)
     print("Powered down.")
