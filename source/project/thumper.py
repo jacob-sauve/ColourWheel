@@ -10,8 +10,8 @@
       \/_/  \/_/\/_/\/_____/\/_/ \/_/\/_/    \/___/  \/_/\/ /
 Code to control motor for mechanical drum; for use in main loop.
 The drum is toggled on/off by pressing a "button" (US sensor).
-v 1.0
-2026-02-12
+v 2.0
+2026-02-13
 """
 
 # imports
