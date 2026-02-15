@@ -58,7 +58,8 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, de
     if pressed:
         if not toggled_yet:
             # only register click once per button-press
-            drum_on = not drum_on
+            #drum_on = not drum_on
+            drum_on = True # removes toggle -zach
             if debugging:
                 print(f"us sensor 'pressed'; toggling drum state to {drum_on}")
             toggled_yet = True
@@ -71,7 +72,7 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, de
         # added direction to have emergency stop + US sensor verification 2x more frequently
         if debugging:
             print(f"turning {direction} * 90 degrees")
-        motor.set_position_relative(direction * 90)
+        motor.set_position(direction * 90)
         direction  *= -1        # swing opposite way
     # wait outside loop to not overload US sensor when not drumming, only if main loop has insufficient delay
     time.sleep(extra_delay)

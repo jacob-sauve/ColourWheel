@@ -23,7 +23,7 @@ SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
 POLLING_DELAY = 0.1 	# in seconds, for color sensor
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 NOTES = {"D5":587.33,"G5":783.99, "C5":523.25, "E5":659.25}
-COLOURS = {"red":"C5", "purple":"D5", "green":"E5", "orange":"G5"}
+COLOURS = {"blue":"C5", "green":"D5", "yellow":"E5", "orange":"G5"}
 
 
 def play_sound(pitch):
