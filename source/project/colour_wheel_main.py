@@ -13,7 +13,7 @@ from utils.brick import BP, reset_brick
 import math
 from classtest import classify
 from setup_brickpi import setup_ports
-from thumper import drum_setup, drum_iteration
+from counter_thumper import drum_setup, drum_iteration
 
 # constants
 VERSION = "0.9.1" 
@@ -37,7 +37,7 @@ def main_loop(debugging=False, write_to_file=False):
     try:
         played = False      # flag to only play audio once per click
         # set drum parameters
-        direction, toggled_yet, drum_on = drum_setup(motor=MOTOR, debugging=debugging)
+        direction, toggled_yet, drum_on, counter = drum_setup(motor=MOTOR, debugging=debugging)
 		# for a posteriori debugging
         if write_to_file:
         	output_file = open(COLOR_SENSOR_DATA_FILE, "w")
@@ -67,14 +67,15 @@ def main_loop(debugging=False, write_to_file=False):
                 # reset flag
                 played = False
             # update drum
-            direction, toggled_yet, drum_on = drum_iteration(
+            direction, toggled_yet, drum_on, counter = drum_iteration(
                     stop = EMERGENCY_STOP,
                     drum_button = US_SENSOR,
                     motor = MOTOR,
                     direction = direction,
                     toggled_yet = toggled_yet,
                     drum_on = drum_on,
-                    debugging = debugging
+                    counter = counter,
+                    debugging = debugging,
                     )
             sleep(POLLING_DELAY)
         if write_to_file:

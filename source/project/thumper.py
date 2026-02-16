@@ -19,9 +19,9 @@ from utils.brick import Motor, TouchSensor
 import time
 
 # constants
-INSTRUCTION_BUFFER = 0.15   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
-POWER = 80                  # percent, maximum
-DPS = 360                   # degrees per second, maximum
+INSTRUCTION_BUFFER = 0.5   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
+POWER = 50                  # percent, maximum
+DPS = 90                   # degrees per second, maximum
 US_TRIGGER_DISTANCE = 4.0   # centimetres, maximal distance for US sensor to detect "press"
 
 

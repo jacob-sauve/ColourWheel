@@ -19,11 +19,11 @@ from utils.brick import Motor, TouchSensor
 import time
 
 # constants
-INSTRUCTION_BUFFER = 0.15   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
+INSTRUCTION_BUFFER = 0.05   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
 POWER = 80                  # percent, maximum
 DPS = 360                   # degrees per second, maximum
 US_TRIGGER_DISTANCE = 4.0   # centimetres, maximal distance for US sensor to detect "press"
-COUNTS_PER_ROTATION = 50    # amount of iterations before direction is reversed
+COUNTS_PER_ROTATION = 10    # amount of iterations before direction is reversed
 
 
 def is_pressed(us_sensor, debugging=False):
