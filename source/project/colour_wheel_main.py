@@ -2,8 +2,8 @@
 
 """
 Colour Wheel software implementation, main loop
-v2.0.0
-2026-02-13
+v2.2.0
+2026-02-16
 """
 
 # import modules
@@ -20,7 +20,7 @@ VERSION = "0.9.1"
 DURATION = 0.3			# seconds, length of each note
 VOLUME = 90				# decibels, of speaker
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
-POLLING_DELAY = 0.1 	# in seconds, for color sensor
+POLLING_DELAY = 0.07	# in seconds, for color sensor
 COLOR_SENSOR_DATA_FILE = "../data_analysis/classification_data.csv"
 NOTES = {"D5":587.33,"G5":783.99, "C5":523.25, "E5":659.25}
 COLOURS = {"blue":"C5", "green":"D5", "yellow":"E5", "orange":"G5"}
@@ -105,7 +105,7 @@ if __name__=='__main__':
         )
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
     print("Turn the wheel to select a note, then play it by pressing the button!")
-    print("Use the ultrasonic sensor as a button to toggle the drum on/off")
+    print("Use the ultrasonic sensor as a button to start the drum")
     print("The emergency stop button can be used to shut down the system")
     main_loop(debugging=True)
     print("Powered down.")

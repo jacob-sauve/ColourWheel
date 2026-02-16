@@ -9,9 +9,9 @@
      \ \_\ \ \_\ \_\ \_____\ \_\\ \_\ \_\   \ \____/\ \_\ \_\
       \/_/  \/_/\/_/\/_____/\/_/ \/_/\/_/    \/___/  \/_/\/ /
 Code to control motor for mechanical drum; for use in main loop.
-The drum is toggled on/off by pressing a "button" (US sensor).
-v 3.1
-2026-02-13
+The drum is toggled on by pressing a "button" (US sensor).
+v 3.3
+2026-02-16
 """
 
 # imports
@@ -20,10 +20,11 @@ import time
 
 # constants
 INSTRUCTION_BUFFER = 0.05   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
-POWER = 90                  # percent, maximum
-DPS = 360                   # degrees per second, maximum
+POWER = 200                 # percent, maximum
+DPS = 1000                  # degrees per second, maximum
 US_TRIGGER_DISTANCE = 4.0   # centimetres, maximal distance for US sensor to detect "press"
-COUNTS_PER_ROTATION = 5    # amount of iterations before direction is reversed
+COUNTS_PER_ROTATION = 10    # amount of iterations before direction is reversed
+HALF_RANGE_OF_MOTION = 45   # degrees, total range of motion of the drum swing, also how encoder interprets initial position
 
 
 def is_pressed(us_sensor, debugging=False):
@@ -43,8 +44,8 @@ def is_pressed(us_sensor, debugging=False):
 
 def drum_setup(motor, power=POWER, dps=DPS, debugging=False):
     """setup already initialized drum stored in variable motor"""
-    # indicate to encoder that current pos is 0 degrees
     motor.reset_encoder()
+    motor.offset_encoder(HALF_RANGE_OF_MOTION - 5)    # have the motor start touching drum
     # max out at the slowest between power% power and dps deg/sec
     motor.set_limits(power=POWER, dps=DPS)
     direction, toggled_yet, drum_on, counter = +1, False, False, COUNTS_PER_ROTATION
@@ -72,8 +73,8 @@ def drum_iteration(stop, drum_button, motor, direction, toggled_yet, drum_on, co
     if drum_on and counter >= COUNTS_PER_ROTATION:
         # added direction to have emergency stop + US sensor verification 2x more frequently
         if debugging:
-            print(f"turning {direction} * 90 degrees")
-        motor.set_position(direction * 90)
+            print(f"turning {direction} * {HALF_RANGE_OF_MOTION} degrees")
+        motor.set_position(direction * HALF_RANGE_OF_MOTION)
         direction  *= -1        # swing opposite way
         counter = 0
     else:
