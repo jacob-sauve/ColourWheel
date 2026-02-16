@@ -10,7 +10,7 @@
       \/_/  \/_/\/_/\/_____/\/_/ \/_/\/_/    \/___/  \/_/\/ /
 Code to control motor for mechanical drum; for use in main loop.
 The drum is toggled on/off by pressing a "button" (US sensor).
-v 2.1
+v 3.1
 2026-02-13
 """
 
@@ -20,10 +20,10 @@ import time
 
 # constants
 INSTRUCTION_BUFFER = 0.05   # seconds, nonzero so motor doesn't die. Also counts as US polling buffer
-POWER = 80                  # percent, maximum
+POWER = 90                  # percent, maximum
 DPS = 360                   # degrees per second, maximum
 US_TRIGGER_DISTANCE = 4.0   # centimetres, maximal distance for US sensor to detect "press"
-COUNTS_PER_ROTATION = 10    # amount of iterations before direction is reversed
+COUNTS_PER_ROTATION = 5    # amount of iterations before direction is reversed
 
 
 def is_pressed(us_sensor, debugging=False):
