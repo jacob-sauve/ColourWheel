@@ -2,8 +2,8 @@
 
 """
 Colour Wheel software implementation, main loop
-v2.2.0
-2026-02-16
+v2.2.1
+2026-02-19
 """
 
 # import modules
@@ -16,7 +16,7 @@ from setup_brickpi import setup_ports
 from counter_thumper import drum_setup, drum_iteration
 
 # constants
-VERSION = "0.9.1" 
+VERSION = "2.2.1" 
 DURATION = 0.3			# seconds, length of each note
 VOLUME = 90				# decibels, of speaker
 SOUND = sound.Sound(duration=DURATION, pitch="A4", volume=VOLUME)
@@ -27,17 +27,25 @@ COLOURS = {"blue":"C5", "green":"D5", "yellow":"E5", "orange":"G5"}
 
 
 def play_sound(pitch):
-	"""Play a single note of pitch pitch"""
+	"""Play a single note of pitch pitch
+    Keyword arguments:
+        pitch       -- pitch of desired note in Hertz
+    """
 	SOUND.set_pitch(pitch)
 	SOUND.update_audio()
 	SOUND.play()
-	# SOUND.wait_done()
+
 
 def main_loop(debugging=False, write_to_file=False):
+    """Main loop which runs the Colour Wheel flute system
+    Keyword arguments:
+        debugging       -- flag to toggle informative print statements on/off when True/False (default False)
+        write_to_file   -- flag to write color sensor output to a file for debugging purposes (default False)
+    """
     try:
         played = False      # flag to only play audio once per click
         # set drum parameters
-        direction, toggled_yet, drum_on, counter = drum_setup(motor=MOTOR, debugging=debugging)
+        direction, drum_on, counter = drum_setup(motor=MOTOR, debugging=debugging)
 		# for a posteriori debugging
         if write_to_file:
         	output_file = open(COLOR_SENSOR_DATA_FILE, "w")
@@ -67,12 +75,10 @@ def main_loop(debugging=False, write_to_file=False):
                 # reset flag
                 played = False
             # update drum
-            direction, toggled_yet, drum_on, counter = drum_iteration(
-                    stop = EMERGENCY_STOP,
+            direction, drum_on, counter = drum_iteration(
                     drum_button = US_SENSOR,
                     motor = MOTOR,
                     direction = direction,
-                    toggled_yet = toggled_yet,
                     drum_on = drum_on,
                     counter = counter,
                     debugging = debugging,
@@ -96,6 +102,7 @@ def main_loop(debugging=False, write_to_file=False):
 
 
 if __name__=='__main__':
+    # setup sensors and actuator
     TOUCH_SENSOR, COLOR_SENSOR, EMERGENCY_STOP, US_SENSOR, MOTOR = setup_ports(
             play_button=True,
             emergency_stop=True,
@@ -104,7 +111,7 @@ if __name__=='__main__':
             drum_motor=True
         )
     print(f"\n\nWelcome to Colour Wheel v{VERSION}")
-    print("Turn the wheel to select a note, then play it by pressing the button!")
+    print("Turn the wheel to select a note, then play it by pressing the 'play' button!")
     print("Use the ultrasonic sensor as a button to start the drum")
     print("The emergency stop button can be used to shut down the system")
     main_loop(debugging=True)
