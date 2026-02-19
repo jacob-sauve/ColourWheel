@@ -1,7 +1,6 @@
 """
 Color classification script.
-Uses 'omega value' calculated according to our formula and checks against saved
-standard values.
+Uses 'omega value' calculated according to our formula and checks against saved standard values.
 v 2.0
 2026-02-19
 """
