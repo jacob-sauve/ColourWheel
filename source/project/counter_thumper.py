@@ -73,7 +73,7 @@ def drum_iteration(drum_button, motor, direction, drum_on, counter, debugging=Fa
     Keyword arguments:
         drum_button -- the EV3UltrasonicSensor object which triggers the drum
         motor       -- the Motor object which acts as the drum
-        direction   -- makes Motor turn clockwise when positive, counterclockwise when negative
+        direction   -- makes Motor turn counterclockwise when positive, clockwise when negative
         drum_on     -- False until drum has been turned on, then True to stop US Sensor polling and start drum
         counter     -- multithreading substitute, counts iterations of main loop before drum direction update
         debugging   -- flag to toggle informative print statements on/off when True/False (default False)
